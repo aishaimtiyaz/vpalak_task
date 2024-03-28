@@ -1,0 +1,58 @@
+body{
+    background-color: #efebeb;
+}
+h1{
+    text-align: center;
+}
+#searchBarHeader,#orderDetailsContainer{
+    background-color: #fff;
+    padding: 5px;
+    margin:15px 45px 15px 45px;
+    border-radius: 40px;   
+}
+#searchBarHeader{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+#orderDetailsContainer{
+    visibility: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+#searchBarContainer{
+    display: grid;
+    grid-template-columns:1.5fr 2fr 1fr;
+    grid-template-rows:auto;
+    /* background-color: brown; */
+    align-items: center;
+    margin: 10px;
+    border-radius: 40px;
+    border: 1px solid grey;
+}
+#searchOptionsList{
+    /* background-color: rgb(51, 26, 141); */
+    /* align-items: center; */
+
+}
+#searchBar{
+    display: flex;
+    justify-content: center;
+}
+#searchBar>input{
+    width: 95%;
+    /* background-color: rgb(157, 166, 53); */
+    border-radius: 20px;
+    padding: 10px;
+}
+#searchOrderBtn{
+    background-color: green;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+.list{
+    list-style: none;
+    display: flex;
+    gap: 4px;
+}
