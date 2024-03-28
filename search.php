@@ -1,60 +1,35 @@
 <?php
-// Connect to your database
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "your_database";
+// Include the database connection file
+require_once 'db_connection.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Get the search input from the AJAX request
+$searchInput = $_GET['searchInput'];
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Fetch order details based on search option and value
-if(isset($_POST['searchOption']) && isset($_POST['searchValue'])) {
-    $searchOption = $_POST['searchOption'];
-    $searchValue = $_POST['searchValue'];
-
-    // Construct SQL query based on search option
-    $sql = "";
-    switch ($searchOption) {
-        case "orderId":
-            $sql = "SELECT * FROM OrderTable WHERE orderId = '$searchValue'";
-            break;
-        case "mobile":
-            // Assuming mobile is a field in the CustomerTable
-            $sql = "SELECT * FROM CustomerTable WHERE mobile = '$searchValue'";
-            break;
-        case "name":
-            // Assuming name is a field in the CustomerTable
-            $sql = "SELECT * FROM CustomerTable WHERE name = '$searchValue'";
-            break;
-        case "email":
-            // Assuming email is a field in the CustomerTable
-            $sql = "SELECT * FROM CustomerTable WHERE email = '$searchValue'";
-            break;
-        default:
-            echo "Invalid search option";
-            exit();
-    }
-
+// Check if the search input is empty
+if(empty($searchInput)) {
+    echo "<p>Please enter an order ID or product name in the search bar.</p>";
+} else {
+    // Perform a SELECT query to retrieve the order details based on the provided order ID or product name
+    $sql = "SELECT * FROM orders WHERE order_id = '$searchInput' OR product_name LIKE '%$searchInput%'";
     $result = $conn->query($sql);
-    
+
+    // Check if any rows were returned
     if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            // Display order or customer details based on the search option
-            // You can adjust this part according to your database structure
-            echo "<p>Order ID: " . $row["orderId"] . "</p>";
-            echo "<p>Product Name: " . $row["productName"] . "</p>";
-            echo "<p>Product Link: " . $row["productLink"] . "</p>";
-            // Add other details here
+        // Output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo "<div>";
+            echo "<p><strong>Order ID:</strong> " . $row["order_id"] . "</p>";
+            echo "<p><strong>Product Name:</strong> " . $row["product_name"] . "</p>";
+            echo "<p><strong>Product Link:</strong> <a href='" . $row["product_link"] . "'>" . $row["product_link"] . "</a></p>";
+            echo "<p><strong>Price:</strong> $" . $row["price"] . "</p>";
+            // Output other order details as needed
+            echo "</div>";
         }
     } else {
-        echo "No results found";
+        echo "<p>No results found for Order ID or Product Name: " . $searchInput . "</p>";
     }
 }
 
+// Close the database connection
 $conn->close();
 ?>
